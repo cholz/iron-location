@@ -98,6 +98,14 @@ milliseconds.
           type: Number,
           value: 2000
         },
+        
+        /**
+        * Do not add the first Query in browser's History
+        */
+        dwellFirstQuery: {
+            type: Boolean,
+            value: false
+        },
 
         /**
          * A regexp that defines the set of URLs that should be considered part
@@ -208,6 +216,10 @@ milliseconds.
         var now = window.performance.now();
         var shouldReplace =
             this._lastChangedAt + this.dwellTime > now;
+		if (this.dwellFirstQuery) {
+			this.dwellFirstQuery = false;
+			shouldReplace = true;
+		}
         this._lastChangedAt = now;
         if (shouldReplace) {
           window.history.replaceState({}, '', fullNewUrl);
